@@ -1,0 +1,93 @@
+{%extends 'base.html'%}
+
+{%block main_block%}
+
+<div class="container">
+    <div class="w-50 mx-auto mt-5">
+        <form action="">
+
+            <select name="category" id="" class="form-select" onchange="this.form.submit()">
+                <option value="all" {%if selected == "all" %} selected {%endif%}>all</option>
+
+                <option value="personal" {%if selected == "personal" %} selected {%endif%}>personal</option>
+                <option value="business"{%if selected == "business" %} selected {%endif%}>business</option>
+            </select>
+            <!-- <button type="submit">Fetch</button> -->
+        </form>
+
+        <!-- <form action="{% url 'task-all' %}" class="pt-5 mx-5 ">
+            <input type="text" placeholder="enter keyword" name="search_text" class="mx-3">
+            <button type="submit" class="btn btn-dark">Search</button>
+        </form> -->
+
+    </div>
+</div>
+
+
+<div class="container">
+
+    <div class="row">
+        {%for t in tasks%}
+
+        <div class="col-4">
+
+            <div class="card text-bg-dark mb-3 mt-5" style="max-width: 18rem;background-color: black;color: #f8f6f6;">
+                <div class="card-header d-flex justify-content-between">
+                    <div> {{t.user}} </div>
+
+                        {%if t.status == 'done' %}
+                            <i class="fa-solid fa-check "  style="color: rgb(9, 243, 9);" ></i>
+                        {%endif%}
+
+                        {%if t.status == 'pending' %}
+
+                            <i class="fa-solid fa-spinner" style="color: aqua;"></i>
+
+                            <!-- <i class="fa-solid fa-circle-exclamation" style="color: aqua;"></i> -->
+
+                        {%endif%}
+
+
+                        
+                        {%if t.status == 'in-progress' %}
+
+                            <i class="fa-solid fa-hourglass-start" style="color: rgb(197, 7, 7);"></i>
+
+                        {%endif%} 
+
+
+                       
+
+                    <div> {{t.status}} </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{t.title}}</h5>
+                    <p class="card-text">{{t.description}}</p>
+                </div>
+                <div class="card-footer text-body-white">
+                    created_date:{{t.created_date | date}}
+                    due_date:{{t.due_date | date}}
+                    last_updated:{{t.updated_date | date}}
+                    <div>
+                    <a class="btn btn-success" href="{% url 'task-edit' t.id %}" role="button">View</a>
+                    <a class="btn btn-success" href="{% url 'task-delete' t.id %}" role="button">Delete</a>
+                    </div>
+                    <!-- <button class="btn btn-dark" type="submit"  style="color: rgb(251, 253, 253);background-color: rgb(2, 0, 12);">View</button> -->
+
+
+                </div>
+            </div>
+
+        </div>
+
+        {%endfor%}
+
+    </div>
+</div>
+
+    
+
+
+{%endblock%}
+{%block script_block%}
+{%endblock%}

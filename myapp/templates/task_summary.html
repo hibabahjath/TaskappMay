@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{%block main_block%}
+
+<h1 style="text-align: center;" class="mb-5">Total Task Count :{{total_task_count}}</h1>
+
+<div class="border w-50 mx-auto" style="text-align: center;">
+
+    <h3>Category Summary</h3>
+
+    {% for i in category_summary%}
+
+        <div>
+
+            {{i.category}} : {{i.cat_count}}
+
+        </div>
+
+    {%endfor%}
+
+</div>
+
+<div class="border w-50 mx-auto" style="text-align: center;">
+
+    <h3>Status Summary</h3>
+
+    {% for i in status_summary%}
+
+        <div>
+
+            {{i.status}} : {{i.status_count}}
+
+        </div>
+
+    {%endfor%}
+
+</div>
+
+
+
+{%endblock%}
