@@ -14,6 +14,8 @@ from django.db.models import Q,Count
 
 from django.contrib.auth.models import User
 
+from django.contrib.auth import authenticate,login,logout
+
 # Create your views here.
 
 class SignUpView(View):
@@ -51,6 +53,27 @@ class SignInView(View):
         form_instance=SignInForm()
 
         return render(request,self.template_name,{"form":form_instance})
+    
+    def post(self,request,*args,**kwargs):
+
+        form_instance=SignInForm(request.POST)
+
+        if form_instance.is_valid():
+
+            # extract username and password
+            uname=form_instance.cleaned_data.get("username")
+
+            pwd=form_instance.cleaned_data.get("password")
+
+            user_object=authenticate(request,username=uname,password=pwd)
+
+            if user_object:
+
+                login(request,user_object)
+
+                return redirect("task-all")
+        
+        return render(request,self.template_name,{"form":form_instance})
 
 class TaskCreateView(View):
 
@@ -65,6 +88,8 @@ class TaskCreateView(View):
         form_instance=TaskForm(request.POST)
 
         if form_instance.is_valid:
+
+            form_instance.instance.user=request.user
 
             form_instance.save()
 
@@ -220,6 +245,14 @@ class TaskSummaryView(View):
         }
 
         return render(request,"task_summary.html",context)
+    
+class SignOutView(View):
+
+    def get(self,request,*args,**kwargs):
+
+        logout(request)
+
+        return redirect("login")
 
 
 

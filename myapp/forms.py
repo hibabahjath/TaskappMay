@@ -14,7 +14,9 @@ class TaskForm(forms.ModelForm):
 
         exclude=("created_date",
                  "status",
-                 "updated_date")
+                 "updated_date",
+                 "user",
+                 )
         
         widgets={
 
@@ -26,7 +28,6 @@ class TaskForm(forms.ModelForm):
 
             "category":forms.Select(attrs={"class":"form_control"}),
 
-            "user":forms.TextInput(attrs={"class":"form-control"}),
 
 
         }
@@ -49,7 +50,7 @@ class RegistrationForm(forms.ModelForm):
 
             "username":forms.TextInput(attrs={"class":"form-control"}),
 
-            "password":forms.TextInput(attrs={"class":"form_control"}),
+            "password":forms.PasswordInput(attrs={"class":"form_control"}),
 
             }
 
@@ -63,7 +64,7 @@ class SignInForm(forms.Form):
 
         "username":forms.TextInput(attrs={"class":"form-control"}),
 
-        "password":forms.TextInput(attrs={"class":"form_control"}),
+        "password":forms.PasswordInput(attrs={"class":"form_control"}),
 
     }
 
