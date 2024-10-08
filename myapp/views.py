@@ -16,6 +16,10 @@ from django.contrib.auth.models import User
 
 from django.contrib.auth import authenticate,login,logout
 
+from myapp.decorators import signin_required
+
+from django.utils.decorators import method_decorator
+
 # Create your views here.
 
 class SignUpView(View):
@@ -75,6 +79,8 @@ class SignInView(View):
         
         return render(request,self.template_name,{"form":form_instance})
 
+
+@method_decorator(signin_required,name="dispatch")
 class TaskCreateView(View):
 
     def get(self,request,*args,**kwargs):
@@ -103,7 +109,7 @@ class TaskCreateView(View):
 
             return render(request,"task_create.html",{"form":form_instance})
 
-
+@method_decorator(signin_required,name="dispatch")
 class TaskListView(View):
 
     def get(self,request,*args,**kwargs):
@@ -114,18 +120,21 @@ class TaskListView(View):
 
         if selected_category == "all":
 
-            qs=Task.objects.all()
+            qs=Task.objects.filter(user=request.user)
 
         else:
 
-            qs=Task.objects.filter(category=selected_category)
+            qs=Task.objects.filter(category=selected_category,user=request.user)
 
         if search_txt != None:
 
-            qs=Task.objects.filter(Q(title__icontains=search_txt)|Q(description__icontains=search_txt))
+            qs=Task.objects.filter(user=request.user)
+
+            qs=qs.filter(Q(title__icontains=search_txt)|Q(description__icontains=search_txt))
 
         return render(request,"task_list.html",{"tasks":qs,"selected":selected_category})
 
+@method_decorator(signin_required,name="dispatch")
 class TaskDetailView(View):
 
     def get(self,request,*args,**kwargs):
@@ -136,6 +145,7 @@ class TaskDetailView(View):
 
         return render(request,"task_detail.html",{"task":qs})
     
+@method_decorator(signin_required,name="dispatch")
 class TaskUpdateView(View):
 
     def get(self,request,*args,**kwargs):
@@ -206,7 +216,8 @@ class TaskUpdateView(View):
     #     else:
 
     #         return render(request,"task-edit.html",{"form":form_instance})
-        
+
+@method_decorator(signin_required,name="dispatch")        
 class TaskDeleteView(View):
 
     def get(self,request,*args,**kwargs):
@@ -218,6 +229,8 @@ class TaskDeleteView(View):
 
         return redirect("task-all")
     
+
+@method_decorator(signin_required,name="dispatch")
 class TaskSummaryView(View):
 
     def get(self,request,*args,**kwargs):
