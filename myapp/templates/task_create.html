@@ -35,9 +35,9 @@
 
             <form action="" method="post">
                 {%csrf_token%}
-                {{form}}
+                {{form.as_p}}
 
-                <button type="submit">ADD</button>
+                <button type="submit" class=" btn btn-dark">ADD</button>
             </form>
         </div>
         <div class="col-4"></div>

@@ -266,7 +266,7 @@ class TaskSummaryView(View):
 
         }
 
-        return render(request,"task_summary.html",context)
+        return render(request,"dashboard.html",context)
     
 class SignOutView(View):
 
@@ -275,6 +275,16 @@ class SignOutView(View):
         logout(request)
 
         return redirect("login")
+
+class DashboardView(View):
+
+    template_name="dashboard.html"
+
+    def get(self,request,*args,**kwargs):
+
+        return render(request,self.template_name)
+
+    
 
 
 
